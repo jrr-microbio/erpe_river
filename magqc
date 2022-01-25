@@ -1,0 +1,73 @@
+#!/bin/bash 
+#SBATCH --nodes=1
+#SBATCH --ntasks=5
+#SBATCH --time=14-00:00:00
+#SBATCH --mem=100gb
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH --mail-user=mborton@colostate.edu
+#SBATCH --partition=wrighton-low,wrighton-hi
+
+cd /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_water/erpe_2018_sw_0hr_WHONDRS-SW48-000085_B/erpe_2018_sw_0hr_WHONDRS-SW48-000085_B_assembly_2500.fa.metabat-bins
+checkm lineage_wf -t 5  -x fa . ./checkM  
+checkm qa checkM/lineage.ms checkM -o 1 -f analyze_bins.txt --tab_table
+
+cd /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_water/erpe_2018_sw_0hr_WHONDRS-SW48-000085_F/erpe_2018_sw_0hr_WHONDRS-SW48-000085idba_assembled_output_25pcnt/erpe_2018_sw_0hr_WHONDRS-SW48-000085_25pcnt_assembly_2500.fa.metabat-bins
+checkm lineage_wf -t 5  -x fa . ./checkM  
+checkm qa checkM/lineage.ms checkM -o 1 -f analyze_bins.txt --tab_table
+
+cd /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_water/erpe_2018_sw_12hr_WHONDRS-SW48-000089_B/erpe_2018_sw_12hr_WHONDRS-SW48-000089_B_assembly_2500.fa.metabat-bins
+checkm lineage_wf -t 5  -x fa . ./checkM  
+checkm qa checkM/lineage.ms checkM -o 1 -f analyze_bins.txt --tab_table
+
+cd /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_water/erpe_2018_sw_12hr_WHONDRS-SW48-000089_F/erpe_2018_sw_12hr_WHONDRS-SW48-000089idba_assembled_output_25pcnt/erpe_2018_sw_12hr_WHONDRS-SW48-000089_25pcnt_assembly_2500.fa.metabat-bins
+checkm lineage_wf -t 5  -x fa . ./checkM  
+checkm qa checkM/lineage.ms checkM -o 1 -f analyze_bins.txt --tab_table
+
+cd /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_water/erpe_2018_sw_15hr_WHONDRS-SW48-000090_B/erpe_2018_sw_15hr_WHONDRS-SW48-000090_B_assembly_2500.fa.metabat-bins
+checkm lineage_wf -t 5  -x fa . ./checkM  
+checkm qa checkM/lineage.ms checkM -o 1 -f analyze_bins.txt --tab_table
+
+cd /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_water/erpe_2018_sw_15hr_WHONDRS-SW48-000090_F/erpe_2018_sw_15hr_WHONDRS-SW48-000090idba_assembled_output_25pcnt/erpe_2018_sw_15hr_WHONDRS-SW48-000090_25pcnt_assembly_2500.fa.metabat-bins
+checkm lineage_wf -t 5  -x fa . ./checkM  
+checkm qa checkM/lineage.ms checkM -o 1 -f analyze_bins.txt --tab_table
+
+cd /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_water/erpe_2018_sw_18hr_WHONDRS-SW48-000091_B/erpe_2018_sw_18hr_WHONDRS-SW48-000091_B_assembly_2500.fa.metabat-bins
+checkm lineage_wf -t 5  -x fa . ./checkM  
+checkm qa checkM/lineage.ms checkM -o 1 -f analyze_bins.txt --tab_table
+
+cd /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_water/erpe_2018_sw_18hr_WHONDRS-SW48-000091_F/erpe_2018_sw_18hr_WHONDRS-SW48-000091idba_assembled_output_25pcnt/erpe_2018_sw_18hr_WHONDRS-SW48-000091_25pcnt_assembly_2500.fa.metabat-bins
+checkm lineage_wf -t 5  -x fa . ./checkM  
+checkm qa checkM/lineage.ms checkM -o 1 -f analyze_bins.txt --tab_table
+
+cd /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_water/erpe_2018_sw_21hr_WHONDRS-SW48-000092_B/erpe_2018_sw_21hr_WHONDRS-SW48-000092_B_assembly_2500.fa.metabat-bins
+checkm lineage_wf -t 5  -x fa . ./checkM  
+checkm qa checkM/lineage.ms checkM -o 1 -f analyze_bins.txt --tab_table
+
+cd /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_water/erpe_2018_sw_21hr_WHONDRS-SW48-000092_F/erpe_2018_sw_21hr_WHONDRS-SW48-000092idba_assembled_output_25pcnt/erpe_2018_sw_21hr_WHONDRS-SW48-000092_25pcnt_assembly_2500.fa.metabat-bins
+checkm lineage_wf -t 5  -x fa . ./checkM  
+checkm qa checkM/lineage.ms checkM -o 1 -f analyze_bins.txt --tab_table
+
+cd /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_water/erpe_2018_sw_24hr_WHONDRS-SW48-000093_B/erpe_2018_sw_24hr_WHONDRS-SW48-000093_B_assembly_2500.fa.metabat-bins
+checkm lineage_wf -t 5  -x fa . ./checkM  
+checkm qa checkM/lineage.ms checkM -o 1 -f analyze_bins.txt --tab_table
+
+cd /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_water/erpe_2018_sw_24hr_WHONDRS-SW48-000093_F/erpe_2018_sw_24hr_WHONDRS-SW48-000093idba_assembled_output_25pcnt/erpe_2018_sw_24hr_WHONDRS-SW48-000093_25pcnt_assembly_2500.fa.metabat-bins
+checkm lineage_wf -t 5  -x fa . ./checkM  
+checkm qa checkM/lineage.ms checkM -o 1 -f analyze_bins.txt --tab_table
+
+cd /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_water/erpe_2018_sw_27hr_WHONDRS-SW48-000094_B/erpe_2018_sw_27hr_WHONDRS-SW48-000094_B_assembly_2500.fa.metabat-bins
+checkm lineage_wf -t 5  -x fa . ./checkM  
+checkm qa checkM/lineage.ms checkM -o 1 -f analyze_bins.txt --tab_table
+
+cd /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_water/erpe_2018_sw_27hr_WHONDRS-SW48-000094_F/erpe_2018_sw_27hr_WHONDRS-SW48-000094idba_assembled_output_25pcnt/erpe_2018_sw_27hr_WHONDRS-SW48-000094_25pcnt_assembly_2500.fa.metabat-bins
+checkm lineage_wf -t 5  -x fa . ./checkM  
+checkm qa checkM/lineage.ms checkM -o 1 -f analyze_bins.txt --tab_table
+
+
+cd /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_water/erpe_2018_sw_30hr_WHONDRS-SW48-000095_B/erpe_2018_sw_30hr_WHONDRS-SW48-000095_B_assembly_2500.fa.metabat-bins
+checkm lineage_wf -t 5  -x fa . ./checkM  
+checkm qa checkM/lineage.ms checkM -o 1 -f analyze_bins.txt --tab_table
+
+cd /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_water/erpe_2018_sw_30hr_WHONDRS-SW48-000095_F/erpe_2018_sw_30hr_WHONDRS-SW48-000095idba_assembled_output_25pcnt/erpe_2018_sw_30hr_WHONDRS-SW48-000095_25pcnt_assembly_2500.fa.metabat-bins
+checkm lineage_wf -t 5  -x fa . ./checkM  
+checkm qa checkM/lineage.ms checkM -o 1 -f analyze_bins.txt --tab_table
