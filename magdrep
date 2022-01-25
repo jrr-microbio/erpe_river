@@ -1,0 +1,13 @@
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --ntasks=15
+#SBATCH --time=240:00:00
+#SBATCH --mem=150gb
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH --mail-user=jrodram@colostate.edu
+#SBATCH --partition=wrighton-hi
+#SBATCH --nodelist=zenith
+
+cd /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_and_pore_viral_db_analyses/all_microbial_genomes_all_samples
+
+dRep dereplicate dRep_out_no_2019_MAGs_97id -sa 97 -p 30 -comp 50 -con 10 -g /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_and_pore_viral_db_analyses/all_microbial_genomes_all_samples/*fa
