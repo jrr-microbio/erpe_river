@@ -17,7 +17,7 @@ dat=dat[-1]
 dat=dat[-1]
 
 dat2=dat
-dat2=as.data.frame(sapply(dat2, as.numeric))
+#dat2=as.data.frame(sapply(dat2, as.numeric))
 
 log_dat=log(dat2)
 
@@ -44,6 +44,14 @@ dat$pH <- as.character(log_dat$pH)
 
 pca_res=prcomp(na.omit(log_dat), scale.=TRUE)
 
+PCA1=prcomp(log_dat)
+Loadings1=as.data.frame(PCA1$rotation[,1:2])
+
+
+write.csv(Loadings1$PC1, file="PC1_from_PCA.csv")
+
+
+
 metadat=read.table("/Volumes/GoogleDrive/My Drive/University/Wrighton Lab; PhD/ERPE_Timeseries_viral_communities/geochem_PCA/new_remade/26_samples_geochemistry_metadat_id.txt", header = T, sep="\t")
 
 rownames(metadat)<-metadat[,1]
@@ -51,6 +59,19 @@ metadat=metadat[-1]
 
 autoplot(pca_res, data = metadat, colour = 'timepoint', size=14)+dark_theme_gray()
 autoplot(pca_res, data = metadat, colour = 'timepoint', size=14, loadings=T, loadings.label=T, loadings.label.size=3)+dark_theme_gray()
+
+
+#Run mrpp and ANOSIM on sites between samples
+#This establishes the coordinates for the samples and all OTUS onto an non-metric dimensional scaling
+Ord_dist <-metaMDSdist(dat2, distance = "bray", noshare = 0.1, trace = 1, autotransform=FALSE)
+
+mrpp(Ord_dist, metadat$sw_pw, permutations=999, distance="bray")
+anosim(Ord_dist, metadat$sw_pw, permutations = 999)
+
+
+
+
+
 
 
 
