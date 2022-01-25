@@ -1,5 +1,46 @@
 #!/bin/bash
 
+#$1 list of names of the paired reads that you want to trim.
+
+for element in $(<$1)
+do
+sickle pe -f "$element"_R1_001.fastq -r "$element"_R2_001.fastq -t sanger -o trimmed_"$element"_R1_001.fastq -p trimmed_"$element"_R2_001.fastq -s "$element"_trimmed_out_reads
+done
+echo "reads have been successfuly trimmed"
+
+
+############## 25% Subassembly
+
+#!/bin/bash
+
+#$1 list of names of the trimmed paired reads that you want to assembled.
+
+for element in $(<$1)
+do
+reformat.sh in1=/home/projects/WHONDRS/metaG/2018_rivers/erpe/erpe_JRR/surface_water/trimmed_"$element"_R1.fastq in2=/home/projects/WHONDRS/metaG/2018_rivers/erpe/erpe_JRR/surface_water/trimmed_"$element"_R2.fastq out1=/home/projects/WHONDRS/metaG/2018_rivers/erpe/erpe_JRR/surface_water/trimmed_"$element"_R1_25pcnt.fastq out2=/home/projects/WHONDRS/metaG/2018_rivers/erpe/erpe_JRR/surface_water/trimmed_"$element"_R2_25pcnt.fastq samplerate=0.25 -sampleseed=1234
+
+done
+echo "reads have been successfuly subsampled"
+
+
+
+################ fq2fa - fastq to fasta
+
+#!/bin/bash
+
+#$1 list of names of the trimmed paired reads that you want to assembled.
+
+for element in $(<$1)
+do
+fq2fa --merge --filter /home/projects/WHONDRS/metaG/2018_rivers/erpe/erpe_JRR/surface_water/trimmed_"$element"_R1_25pcnt.fastq /home/projects/WHONDRS/metaG/2018_rivers/erpe/erpe_JRR/surface_water/trimmed_"$element"_R2_25pcnt.fastq /home/projects/WHONDRS/metaG/2018_rivers/erpe/erpe_JRR/surface_water/trimmed_"$element"_R1R2_ALL_trimmed_25pcnt.fa
+
+done
+echo "fq2fa successfuly run"
+
+
+
+
+
 
 #########pre-trim
 #$1 list of names of the assemblies.
