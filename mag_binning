@@ -1,0 +1,29 @@
+#######mapping
+
+#!/bin/bash
+
+#$1 list of names of the assemblies.
+
+for element in $(<$1)
+do
+cd "$element"_B
+bbmap.sh -Xmx48G threads=15 minid=85 overwrite=t ref="$element"_B_assembly_2500.fa in1=/home/projects/WHONDRS/metaG/2018_rivers/erpe/erpe_JRR/surface_water/trimmed_"$element"_R1.fastq in2=/home/projects/WHONDRS/metaG/2018_rivers/erpe/erpe_JRR/surface_water/trimmed_"$element"_R2.fastq out="$element"_B_mapped.sam
+cd ..
+done
+echo "Mapping Completed"
+
+##########binning and samtools
+
+#!/bin/bash
+
+#$1 list of names of the assemblies.
+
+for element in $(<$1)
+do
+cd "$element"
+samtools view -@ 15 -bS "$element"_mapped.sam > "$element"_mapped.bam
+samtools sort -T "$element"_t_2500.sorted -o "$element"_2500.sorted.bam "$element"_mapped.bam -@ 15
+runMetaBat.sh "$element"_assembly_2500.fa "$element"_2500.sorted.bam
+cd ..
+done
+echo "Sorting and Mapping Completed"
