@@ -1,0 +1,15 @@
+#!/bin/bash
+
+source /opt/Miniconda2/miniconda2/bin/activate DRAM
+
+cd /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_and_pore_viral_db_analyses/dramv/dramv_1250_and_per_compartments_100621_final/1250_full_set_annots_100621/
+
+#remove bad chars from fasta of concatenated viruses ge10kb
+DRAM-v.py remove_bad_characters -i /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_and_pore_viral_db_analyses/dramv/dramv_1250_and_per_compartments_100621_final/1250_full_set_annots_100621/all_viruses_1250_erpe_2018_swpw_ABF_95-85_manual_or_keep.fna -o /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_and_pore_viral_db_analyses/dramv/dramv_1250_and_per_compartments_100621_final/1250_full_set_annots_100621/all_viruses_1250_erpe_2018_swpw_ABF_95-85_manual_or_keep_nobadchars.fna
+
+
+#remove bad chars from tab
+DRAM-v.py remove_bad_characters -v /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_and_pore_viral_db_analyses/dramv/dramv_1250_and_per_compartments_100621_final/1250_full_set_annots_100621/erpe_2018_pwsw_all_viral-affi-contigs-for-dramv_ABF.tab -o /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_and_pore_viral_db_analyses/dramv/dramv_1250_and_per_compartments_100621_final/1250_full_set_annots_100621/erpe_2018_pwsw_all_viral-affi-contigs-for-dramv_ABF_nobadchars.tab
+
+#annotate
+DRAM-v.py annotate -i /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_and_pore_viral_db_analyses/dramv/dramv_1250_and_per_compartments_100621_final/1250_full_set_annots_100621/all_viruses_1250_erpe_2018_swpw_ABF_95-85_manual_or_keep_nobadchars.fna -v /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_and_pore_viral_db_analyses/dramv/dramv_1250_and_per_compartments_100621_final/1250_full_set_annots_100621/erpe_2018_pwsw_all_viral-affi-contigs-for-dramv_ABF_nobadchars.tab -o /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_and_pore_viral_db_analyses/dramv/dramv_1250_and_per_compartments_100621_final/1250_full_set_annots_100621/output_uniref_re --min_contig_size 0 --threads 25 --use_uniref &> log_erpe_dramv_finalset_uniref.txt
