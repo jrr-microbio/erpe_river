@@ -1,0 +1,65 @@
+library(ggplot2)
+library(tidyr)
+library(grid)
+library(gridExtra)
+library(ggforce)
+library(ggfortify)
+library(cluster)
+library(vegan)
+library(ggdark)
+
+setwd("/Volumes/GoogleDrive/My Drive/University/Wrighton Lab; PhD/ERPE_Timeseries_viral_communities/geochem_PCA/new_remade/")
+
+#Loading in our data
+dat=read.table("/Volumes/GoogleDrive/My Drive/University/Wrighton Lab; PhD/ERPE_Timeseries_viral_communities/geochem_PCA/new_remade/26_samples_geochemistry_noMnnoNa.txt", header = T, sep="\t")
+rownames(dat)<-dat[,1]
+dat=dat[-1]
+dat=dat[-1]
+
+dat2=dat
+dat2=as.data.frame(sapply(dat2, as.numeric))
+
+log_dat=log(dat2)
+
+dat$Temp <- as.character(log_dat$Temp)
+dat$DOC...TN <- as.character(log_dat$DOC...TN)
+dat$uS.cm <- as.character(log_dat$uS.cm)
+dat$SRP <- as.character(log_dat$SRP)
+dat$NH4..N <- as.character(log_dat$NH4..N)
+dat$NO3..N <- as.character(log_dat$NO3..N)
+dat$DOC <- as.character(log_dat$DOC)
+dat$DIC <- as.character(log_dat$DIC)
+dat$Cl <- as.character(log_dat$Cl)
+dat$SO42 <- as.character(log_dat$SO42)
+dat$B <- as.character(log_dat$B)
+dat$Ca <- as.character(log_dat$Ca)
+dat$Fe <- as.character(log_dat$Fe)
+dat$K <- as.character(log_dat$K)
+dat$Mg <- as.character(log_dat$Mg)
+dat$Na <- as.character(log_dat$Na)
+dat$TN <- as.character(log_dat$TN)
+dat$pH <- as.character(log_dat$pH)
+
+
+
+pca_res=prcomp(na.omit(log_dat), scale.=TRUE)
+
+metadat=read.table("/Volumes/GoogleDrive/My Drive/University/Wrighton Lab; PhD/ERPE_Timeseries_viral_communities/geochem_PCA/new_remade/26_samples_geochemistry_metadat_id.txt", header = T, sep="\t")
+
+rownames(metadat)<-metadat[,1]
+metadat=metadat[-1]
+
+autoplot(pca_res, data = metadat, colour = 'timepoint', size=14)+dark_theme_gray()
+autoplot(pca_res, data = metadat, colour = 'timepoint', size=14, loadings=T, loadings.label=T, loadings.label.size=3)+dark_theme_gray()
+
+
+
+
+
+
+fit_logvir <- envfit(pca_res, dat2, perm = 999, na.rm=TRUE)
+scores(fit_logvir, "vectors")
+plot(pca_res)
+plot(fit_logvir)
+plot(fit_logvir, p.max = 0.05, col = "green")
+
