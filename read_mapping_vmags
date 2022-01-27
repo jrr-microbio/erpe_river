@@ -48,3 +48,4 @@ echo "finished mapping scripts"
 ###################################New addition
 #Bowtie2 mapping is competitive by default - but is also leaky. When it gets 2 identical hits, it reports all hits and so you get hits that are redundant. In order to remove this, we apply the additional reformat.sh command to the 95ID filtered and SORTED.bam files for each set of reads:
 reformat.sh -Xmx100g pairedonly=t primaryonly=t in="$element".95ID.sorted.bam out="$element"_mapped_95ID.FILTERED_sorted_comp-map.bam
+#Rerun coverM on the output file.
