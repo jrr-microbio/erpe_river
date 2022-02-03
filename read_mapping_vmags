@@ -20,7 +20,7 @@ bowtie2 -D 10 -R 2 -N 1 -L 22 -i S,0,2.50 -p 15 -x /home/projects-wrighton-2/GRO
 
 echo "begin samtools"
 samtools view -@ 15 -bS "$element".sam > "$element".bam #sam to bam
-reformat.sh -Xmx100g idfilter=0.95 in="$element".bam out="$element"_mapped_95ID.FILTERED.bam #this will then give you the actual 95% ID mapping. This was wrong before on bbmap as the 95% ID cutoffs were not actually cutoffs.
+reformat.sh -Xmx100g idfilter=0.95 pairedonly=t primaryonly=t in="$element".bam out="$element"_mapped_95ID.FILTERED.bam #this will then give you the actual 95% ID mapping. This was wrong before on bbmap as the 95% ID cutoffs were not actually cutoffs. UPDATE: Bowtie2 is "leaky" in the sense that when a read mapping hit is equally good, it will report all hits. This additional flag ensures that you are only using non-ambiguous calls and truly competitive mapping as well as making sure that all your mapping outputs are from actually paired reads that mapped and not single/unpaired sets. 
 samtools sort -T "$element".95ID.sorted -o "$element".95ID.sorted.bam "$element"_mapped_95ID.FILTERED.bam -@ 15 #sort the bam file
 mv "$element".95ID.sorted.bam /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_and_pore_viral_db_analyses/read_mapping/vMAGs/1250_final_set_010422_bowtie2/sorted_BAM_95ID #now we move out the sorted BAM into its own directory where all will be for coverM. 
 echo "Finished mapping and samtools for '$element' in list" 
