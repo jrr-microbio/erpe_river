@@ -2,9 +2,8 @@
 
 # pre-processing:
 # concatenate MAGs into single file for mapping reference.
-#Select medium-high quality genomes (done by Mikayla Borton)
+#Select medium-high quality genomes
 # list.txt is a list of trimmed read names.
-# bowtie2 snippets and reformat.sh gotten from Bridget McGivern
 
 cd /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_and_pore_viral_db_analyses/read_mapping/MAGs
 
