@@ -1,0 +1,190 @@
+#NMDS for continuous variables
+#This does not work well with NA values.
+
+library(ggplot2)
+library(vegan)
+library(grid)
+library(MASS)
+library(RColorBrewer)
+library(purrr)
+library(dplyr)
+library(tidyr)
+library(plotly)
+library(htmlwidgets)
+library(mds)
+library(ggdark)
+library(tidyverse)
+
+##read in feature table with species as columns and samples as rows
+hostgenome<-read.table('/Volumes/GoogleDrive/My Drive/University/Wrighton Lab; PhD/ERPE_Timeseries_viral_communities/microbial_work/read_mapping/95ID_noambig_filtered/118_MAGs_75AF_3xcov_counts_TMM_normalized_noambig_PWSW_redo_25sample_forNMDS.txt', header=T, sep='\t',check.names=TRUE, row.names = 1)
+
+##read in chemistry (nona)
+chem = read.csv('/Volumes/GoogleDrive/My Drive/University/Wrighton Lab; PhD/ERPE_Timeseries_viral_communities/microbial_work/read_mapping/95ID_noambig_filtered/25_sample_metadata_for_NMDS_with_timepoint.csv', sep = ',', header = TRUE, check.names = T)
+rownames(chem)=chem[,1]
+chem = chem[,-1]
+
+#chemnum=chem[,2:16]
+log_chem=log(chem[,15:29])
+#sqrt_chem=sqrt(chem[,3:30])
+
+chem$SRP <- as.character(log_chem$SRP)
+chem$NH4N <- as.character(log_chem$NH4N)
+chem$NO3N <- as.character(log_chem$NO3N)
+chem$DOC <- as.character(log_chem$DOC)
+chem$DIC <- as.character(log_chem$DIC)
+chem$Cl <- as.character(log_chem$Cl)
+chem$SO42 <- as.character(log_chem$SO42)
+chem$B <- as.character(log_chem$B)
+chem$Ca <- as.character(log_chem$Ca)
+chem$Fe <- as.character(log_chem$Fe)
+chem$K <- as.character(log_chem$K)
+chem$Mg <- as.character(log_chem$Mg)
+chem$Na <- as.character(log_chem$Na)
+chem$TN <- as.character(log_chem$TN)
+chem$pH <- as.character(log_chem$pH)
+chem$sw_pw[which(chem$sw_pw=="pw")] <- "1"
+chem$sw_pw[which(chem$sw_pw=="sw")] <- "2"
+chem$timepoint=factor(chem$timepoint)
+
+####Simple Ord with env factors
+chem.pca_log<-prcomp(na.omit(log_chem), center=TRUE, scale.=TRUE)
+ordhost<-metaMDS(hostgenome, distance = "bray")
+fit_loghost <- envfit(ordhost, log_chem, perm = 999, na.rm=TRUE)
+scores(fit_loghost, "vectors")
+plot(ordhost)
+plot(fit_loghost)
+plot(fit_loghost, p.max = 0.05, col = "green")
+
+#This establishes the coordinates for the samples and all OTUS onto an non-metric dimensional scaling
+Ord_dist <-metaMDSdist(hostgenome, distance = "bray", noshare = 0.1, trace = 1, autotransform=F)
+
+#Run mrpp and ANOSIM on Depth between samples#Run mrpp and ANOSIM on Depth between sample
+mrpp(hostgenome, chem$sw_pw, permutations=999, distance="bray")
+anosim(Ord_dist, chem$sw_pw, permutations = 999)
+
+##NMDS in 2D (k = 3 gives 3D)
+NMDS_Bray_hostgenome <-metaMDS(hostgenome, distance = "bray", k =2,
+                          autotransform = F, noshare = 0.1, trace = 1, trymax = 500)
+ord.hostgenome = as.data.frame(scores(NMDS_Bray_hostgenome), display="sites")
+ord.hostgenome$sampleid=row.names(ord.hostgenome)
+stressplot(NMDS_Bray_hostgenome)
+#autoplot(NMDS_Bray_hostgenome)
+
+#############Now to plot on GGPLOT to make it look way better.
+#Pull out the ordination scores to plot from the log transformed values.
+ord.scrs<-as.data.frame(scores(NMDS_Bray_hostgenome),display="sites")
+fit.scrs_log<-as.data.frame(scores(fit_loghost,display="vectors"))
+Species<-rownames(fit.scrs_log)
+fit.scrs_log<-cbind(fit.scrs_log,Species)
+
+sw_pw<-ggplot(ord.scrs)+geom_point(mapping = aes(x = NMDS1, y = NMDS2, shape=chem$sw_pw, color=chem$timepoint), size=11)
+plot=sw_pw+ggtitle('MAGs pore / surface')+theme(plot.title = element_text(hjust = 0.5))+scale_color_manual(values=c("#8F153A", "#CB3646", "#EE623A", "#D87714", "#F9A056", "#F8C694", "#FAD77F", "#FFFAB3","#9EF89E", "#6AC96E", "#4AAF54", "#229638", "#027D18", "#006600", "#004B00", "#013300"))+scale_x_reverse() #for some reason this came out flipped to the vMAG one, so I apply this scale_x_reverse to flip the image.
+
+#old +scale_color_manual(values=c("#D0BBD8", "#D06DAD", "#D44088", "#751428", "#D1352B", "#E95B3B", "#EF924F", "#F4B45F","#F9D984", "#F8FBC0", "#DDEEAB", "#B7DB96", "#8AC381", "#60A865", "#42814A", "#2B653C"))
+plot
+
+
+####Below is to computationally add in some ellipses for the 95% confidence intervals of the plots.
+NMDS_ord=data.frame(MDS1=ord.scrs$NMDS1, MDS2=ord.scrs$NMDS2, group=chem$sw_pw)
+NMDS_ord_mean=aggregate(NMDS_ord[,1:2],list(group=NMDS_ord$group),"mean")
+NMDS_ord$group=as.factor(NMDS_ord$group)
+
+veganCovEllipse=function (cov, center = c(0, 0), scale = 1.5, npoints = 300) 
+{
+  theta <- (0:npoints) * 2 * pi/npoints
+  Circle <- cbind(cos(theta), sin(theta))
+  t(center + scale * t(Circle %*% chol(cov)))
+}
+
+df_ell <- data.frame()
+for(g in levels(NMDS_ord$group)){
+  df_ell <- rbind(df_ell, cbind(as.data.frame(with(NMDS_ord[NMDS_ord$group==g,],veganCovEllipse(cov.wt(cbind(MDS1,MDS2),wt=rep(1/length(MDS1),length(MDS1)))$cov,center=c(mean(MDS1),mean(MDS2))))),group=g))
+}
+
+sw_pw_ellipse=ggplot(NMDS_ord)+geom_point(mapping = aes(x = MDS1, y = MDS2, shape=chem$sw_pw, color=chem$timepoint), size=11)+scale_color_manual(values=c("#8F153A", "#CB3646", "#EE623A", "#D87714", "#F9A056", "#F8C694", "#FAD77F", "#FFFAB3","#9EF89E", "#6AC96E", "#4AAF54", "#229638", "#027D18", "#006600", "#004B00", "#013300"))
+
+plot_ellipse=sw_pw_ellipse+theme(plot.title = element_text(hjust = 0.5))+scale_x_reverse()+geom_path(data=df_ell, aes(x=MDS1, y=MDS2,colour=group), size=1, linetype=2)+annotate("text",x=NMDS_ord_mean$MDS1,y=NMDS_ord_mean$MDS2,label=NMDS_ord_mean$group)+scale_color_manual(values=c("#8F153A", "#CB3646", "#EE623A", "#D87714", "#F9A056", "#F8C694", "#FAD77F", "#FFFAB3","#9EF89E", "#6AC96E", "#4AAF54", "#229638", "#027D18", "#006600", "#004B00", "#013300","black","black"))
+plot_ellipse
+
+###Working on identifying ordination drivers and whether time relates to them.
+chem_join=rownames_to_column(chem, "sample-id")
+
+ord.scrs_chem=ord.scrs %>% 
+  rownames_to_column("sample-id") %>%
+  left_join(chem_join) %>%
+  mutate_at("timepoint", as.numeric)
+
+ord.scrs_chem_pw=ord.scrs_chem %>%
+  filter(sw_pw==1)
+ord.scrs_chem_sw=ord.scrs_chem %>%
+  filter(sw_pw==2)
+
+cor.test(ord.scrs_chem_sw$NMDS1, ord.scrs_chem_sw$timepoint,method="spearman")
+cor.test(ord.scrs_chem_sw$NMDS2, ord.scrs_chem_sw$timepoint,method="spearman")
+cor.test(ord.scrs_chem_pw$NMDS1, ord.scrs_chem_pw$timepoint,method="spearman")
+cor.test(ord.scrs_chem_pw$NMDS2, ord.scrs_chem_pw$timepoint,method="spearman")
+
+##Begin Ordination of PW only  - because from original ordination, we could see that surfacewater was being collapses very much, and we were looking for explanation of above.
+hostgenome_pw=hostgenome %>%
+  rownames_to_column("sample-id") %>%
+  filter(`sample-id` %in% ord.scrs_chem_pw$`sample-id`)
+
+chem_pw=chem %>%
+  rownames_to_column("sample-id") %>%
+  filter(`sample-id` %in% ord.scrs_chem_pw$`sample-id`)
+
+hostgenome_pw_nmds=column_to_rownames(hostgenome_pw, "sample-id")
+NMDS_Bray_hostgenome_pw <-metaMDS(hostgenome_pw_nmds, distance = "bray", k =2,
+                                 noshare = 0.1, trace = 1, trymax = 500, autotransform=F)
+ord.hostgenome_pw = as.data.frame(scores(NMDS_Bray_hostgenome_pw), display="sites")
+ord.hostgenome_pw$sampleid=row.names(ord.hostgenome_pw)
+
+ord.scrs_pw<-as.data.frame(scores(NMDS_Bray_hostgenome_pw),display="sites")
+
+pw<-ggplot(ord.scrs_pw)+geom_point(mapping = aes(x = NMDS1, y = NMDS2, color=chem_pw$timepoint), size=11)
+
+plot_pw=pw+ggtitle('Viruses pore / surface across time')+theme(plot.title = element_text(hjust = 0.5))+scale_color_manual(values=c("#8F153A", "#CB3646", "#EE623A", "#D87714", "#F9A056", "#F8C694", "#FAD77F", "#FFFAB3","#9EF89E", "#6AC96E", "#4AAF54", "#229638", "#027D18", "#006600", "#004B00", "#013300")) #+ stat_ellipse(aes(x=sw_pw$1, y=sw_pw$2))
+plot_pw
+
+
+##Begin Ordination of SW only  - because from original ordination, we could see that surfacewater was being collapses very much, and we were looking for explanation of above.
+hostgenome_sw=hostgenome %>%
+  rownames_to_column("sample-id") %>%
+  filter(`sample-id` %in% ord.scrs_chem_sw$`sample-id`)
+
+chem_sw=chem %>%
+  rownames_to_column("sample-id") %>%
+  filter(`sample-id` %in% ord.scrs_chem_sw$`sample-id`)
+
+hostgenome_sw_nmds=column_to_rownames(hostgenome_sw, "sample-id")
+NMDS_Bray_hostgenome_sw <-metaMDS(hostgenome_sw_nmds, distance = "bray", k =2,
+                                 noshare = 0.1, trace = 1, trymax = 500, autotransform=F) #have to set this one to autotransform = F to not get an error on not enough sample size.
+ord.hostgenome_sw = as.data.frame(scores(NMDS_Bray_hostgenome_sw), display="sites")
+ord.hostgenome_sw$sampleid=row.names(ord.hostgenome_sw)
+
+ord.scrs_sw<-as.data.frame(scores(NMDS_Bray_hostgenome_sw),display="sites")
+
+sw<-ggplot(ord.scrs_sw)+geom_point(mapping = aes(x = NMDS1, y = NMDS2, color=chem_sw$timepoint), size=11)
+
+plot_sw=sw+ggtitle('Viruses pore / surface across time')+theme(plot.title = element_text(hjust = 0.5))+scale_color_manual(values=c("#8F153A", "#CB3646", "#EE623A", "#D87714", "#F9A056", "#F8C694", "#FAD77F", "#FFFAB3","#9EF89E", "#6AC96E", "#4AAF54", "#229638", "#027D18", "#006600", "#004B00", "#013300")) #+ stat_ellipse(aes(x=sw_pw$1, y=sw_pw$2))
+plot_sw
+
+#We see that the ordinations are so different that they should be plotted individually. So now I'm going to corr test the axes individually.
+##Now corr test the pw only:
+ord.scrs_chem_pw=ord.scrs_pw %>% 
+  rownames_to_column("sample-id") %>%
+  left_join(chem_join) %>%
+  mutate_at("timepoint", as.numeric)
+
+cor.test(ord.scrs_chem_pw$NMDS1, ord.scrs_chem_pw$timepoint,method="spearman")
+cor.test(ord.scrs_chem_pw$NMDS2, ord.scrs_chem_pw$timepoint,method="spearman")
+
+##Now corr test the sw only:
+
+ord.scrs_chem_sw=ord.scrs_sw %>% 
+  rownames_to_column("sample-id") %>%
+  left_join(chem_join) %>%
+  mutate_at("timepoint", as.numeric)
+
+cor.test(ord.scrs_chem_sw$NMDS1, ord.scrs_chem_sw$timepoint,method="spearman")
+cor.test(ord.scrs_chem_sw$NMDS2, ord.scrs_chem_sw$timepoint,method="spearman")
