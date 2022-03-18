@@ -28,9 +28,14 @@ metabolism.long.joined = metabolism_long %>%
 
 metabolism.long.joined<- transform(metabolism.long.joined, genome_id= reorder(genome_id, tax.index))
 
+#making a color palette because that default was very hard to look at.
+pokecolorpal=c("#C5B420", "#F6E673","#FFFF00","#416A10","#7BC552", "#00FF00","#B46220","#E68329", "#392910", "#5A5A5A", "#C6DDEE", "#19ABB4", "#3C30AD", "#06525A", "#BD4141", "#FF7BAC", "#AAA6F0","#FF00FF")
+
 metabolism.long.joined %>%
   mutate_if(is.numeric, ~1 * (.>0)) %>%
   filter(value > 0, 'Presence / Absence' > 1) %>%
   ggplot(aes(x=fct_reorder(genome_id,tax.index, .desc = TRUE), y = reorder(variable, desc(variable), size = value))) + 
-  geom_point(aes(colour=factor(p.taxonomy))) + theme(axis.text.x = element_text(angle=90, vjust=0.5, hjust=1, size=0.5))
+  geom_point(aes(colour=factor(p.taxonomy))) +
+  scale_colour_manual(values=pokecolorpal) +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5, hjust=1, size=0.5))
 
