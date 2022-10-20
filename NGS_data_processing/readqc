@@ -61,7 +61,7 @@ cd ..
 done
 echo "fastqc_complete"
 
-#############
+#############calculate assembled contig stats
 
 #!/bin/bash
 
