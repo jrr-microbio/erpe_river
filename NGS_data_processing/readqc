@@ -22,8 +22,6 @@ reformat.sh in1=/home/projects/WHONDRS/metaG/2018_rivers/erpe/erpe_JRR/surface_w
 done
 echo "reads have been successfuly subsampled"
 
-
-
 ################ fq2fa - fastq to fasta
 
 #!/bin/bash
@@ -37,11 +35,6 @@ fq2fa --merge --filter /home/projects/WHONDRS/metaG/2018_rivers/erpe/erpe_JRR/su
 done
 echo "fq2fa successfuly run"
 
-
-
-
-
-
 #########pre-trim
 #$1 list of names of the assemblies.
 
@@ -53,9 +46,6 @@ fastqc /home/projects/WHONDRS/metaG/2018_rivers/erpe/erpe_JRR/surface_water/untr
 cd ..
 done
 echo "fastqc_complete"
-
-
-
 
 ##############
 
@@ -71,7 +61,6 @@ cd ..
 done
 echo "fastqc_complete"
 
-
 #############
 
 #!/bin/bash
@@ -85,12 +74,6 @@ contig_stats.pl -i "$element"_assembly_2500.fa -o "$element"_assembly_2500.stats
 cd ..
 done
 echo "contig_length_check_complete"
-
-
-
-
-
-
 
 ##########################################contig_stats.pl
 
