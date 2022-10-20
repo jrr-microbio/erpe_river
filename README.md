@@ -1,5 +1,6 @@
 # This is a GitHub Repository of code used for the publication titled: Finely tuned spatial and temporal metagenomics of river compartments reveals viral communities can be stable, cosmopolitan, and impact microbial community function across time
 
+THIS IS STILL A WORK IN PROGRESS:
 The different files in this repository have all the necessary steps that are required to re-create the output that we used to write this manuscript. In each file, you will either find specific commands on what exactly was run, and how to get input files for them if they are part of a pipeline, OR, they will contain commands as well as the input files that were used (e.g., 2.1..., 2.2...3.1...) where each whole number corresponds to the main command and the decimals represent the additional files provided.
 
 
