@@ -14,7 +14,6 @@ cd ..
 done
 echo "metaSPAdes pipeline seems to have run all the way through"
 
-
 ##########megahit
 
 for element in $(<$1)
