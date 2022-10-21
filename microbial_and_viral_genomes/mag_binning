@@ -1,22 +1,18 @@
-#######mapping
-
 #!/bin/bash
 
 #$1 list of names of the assemblies.
+
+#######mapping reads to scaffolds greater than 2500bp
 
 for element in $(<$1)
 do
-cd "$element"_B
-bbmap.sh -Xmx48G threads=15 minid=85 overwrite=t ref="$element"_B_assembly_2500.fa in1=/home/projects/WHONDRS/metaG/2018_rivers/erpe/erpe_JRR/surface_water/trimmed_"$element"_R1.fastq in2=/home/projects/WHONDRS/metaG/2018_rivers/erpe/erpe_JRR/surface_water/trimmed_"$element"_R2.fastq out="$element"_B_mapped.sam
+cd "$element"
+bbmap.sh -Xmx48G threads=15 minid=85 overwrite=t ref="$element"_assembly_2500.fa in1=/home/projects/WHONDRS/metaG/2018_rivers/erpe/erpe_JRR/surface_water/trimmed_"$element"_R1.fastq in2=/home/projects/WHONDRS/metaG/2018_rivers/erpe/erpe_JRR/surface_water/trimmed_"$element"_R2.fastq out="$element"_mapped.sam
 cd ..
 done
-echo "Mapping Completed"
+echo "Mapping finished"
 
-##########binning and samtools
-
-#!/bin/bash
-
-#$1 list of names of the assemblies.
+##########samtools for sorting mapping output file and then binning
 
 for element in $(<$1)
 do
