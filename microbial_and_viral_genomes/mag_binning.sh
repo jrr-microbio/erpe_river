@@ -23,3 +23,7 @@ runMetaBat.sh "$element"_assembly_2500.fa "$element"_2500.sorted.bam
 cd ..
 done
 echo "Sorting and Mapping Completed"
+
+###########Dereplicate the final set of MAGs
+
+dRep dereplicate dRep_out_MAGs_95_id -sa 95 -p 30 -comp 50 -con 10 -g /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_and_pore_viral_db_analyses/all_microbial_genomes_all_samples/*fa
