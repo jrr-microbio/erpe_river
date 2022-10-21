@@ -27,3 +27,8 @@ echo "Sorting and Mapping Completed"
 ###########Dereplicate the final set of MAGs
 
 dRep dereplicate dRep_out_MAGs_95_id -sa 95 -p 30 -comp 50 -con 10 -g /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_and_pore_viral_db_analyses/all_microbial_genomes_all_samples/*fa
+
+###########Now run quality control software on all dereplicated MAGs
+
+checkm lineage_wf -t 15  -x fa ./ ./checkM
+checkm qa checkM/lineage.ms ./checkM -o 2 -f ./checkM/checkm_bin_summary.txt --tab_table
