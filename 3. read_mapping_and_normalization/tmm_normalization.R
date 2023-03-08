@@ -1,60 +1,27 @@
 library(edgeR)
 
-setwd('/Volumes/GoogleDrive/My Drive/University/Wrighton Lab; PhD/ERPE_Timeseries_viral_communities/microbial_work/read_mapping/95ID_noambig_filtered/')
+setwd('/Volumes/Macintosh HD/Users/josue.rodriguez/Library/CloudStorage/GoogleDrive-jarora2213@gmail.com/My Drive/University/wrighton_lab_phd/erpe_timeseries_viral_communities/_paper_figures/NMDS_and_PCA/NMDS_plots/MAG_NMDS/')
 
-#MAGs as rows. Samples as columns. Columns (samples) need to be in the same exact order that the library sizes file samples are in.
-counts_dat = read.csv('/Volumes/GoogleDrive/My Drive/University/Wrighton Lab; PhD/ERPE_Timeseries_viral_communities/microbial_work/read_mapping/95ID_noambig_filtered/coverM_output/coverM_counts_125_MAGs_75AF_3xcov_forTMM_noambig_remadefile.csv', row.names=1, header=T)
+#Genomes as rows. Samples as columns. Columns (samples) need to be in the same exact order that the library sizes file samples are in.
+counts_dat = read.csv('3.1_MAGs_counts_forTMM.csv', row.names=1, header=T)
+counts_dat_vir = read.csv('3.2_vMAGs_counts_forTMM.csv', row.names=1, header=T)
+
 counts_dat=data.matrix(counts_dat)
+counts_dat_vir=data.matrix(counts_dat_vir)
 
-#Two columns. Samples in rows and the library size as the 2nd column. Needs to be in exact same order as abunds. No headers. No nothing. Just two columns of values.
-library_sizes = read.table('/Volumes/GoogleDrive/My Drive/University/Wrighton Lab; PhD/ERPE_Timeseries_viral_communities/microbial_work/read_mapping/library_sizes.tsv', row.names=1, col.names=c('sample_name', 'library_size'))
+#For file library sizes, it needs two columns. Samples in rows and the library size as the 2nd column. Needs to be in exact same order as abunds. No headers. No nothing. Just two columns of values.
+library_sizes = read.table('/Volumes/Macintosh HD/Users/josue.rodriguez/Library/CloudStorage/GoogleDrive-jarora2213@gmail.com/My Drive/University/wrighton_lab_phd/erpe_timeseries_viral_communities/_paper_figures/NMDS_and_PCA/NMDS_plots/MAG_NMDS/MAG_coverM_output/library_sizes.tsv', row.names=1, col.names=c('sample_name', 'library_size'))
 
 lib.size= c(library_sizes['library_size'])$library_size
 
 counts_norm <- DGEList(counts=counts_dat, lib.size= c(library_sizes['library_size'])$library_size)
+counts_norm_vir <- DGEList(counts=counts_dat_vir, lib.size= c(library_sizes['library_size'])$library_size)
 
 counts_norm <- calcNormFactors(counts_norm)
+counts_norm_vir <- calcNormFactors(counts_norm_vir)
 
 tmms <- cpm(counts_norm)
-write.table(tmms, "120_MAGs_75AF_3xcov_counts_TMM_normalized_noambig_methodsnone.tsv", sep='\t', quote=F)
+tmms_vir <- cpm(counts_norm_vir)
 
-
-
-
-########Doing this separately because it might spit out errors depending on how sparse the datasets are:
-
-#surface
-
-counts_dat = read.table('/Volumes/GoogleDrive/My Drive/University/Wrighton Lab; PhD/ERPE_Timeseries_viral_communities/microbial_work/read_mapping/95ID_noambig_filtered/coverM_counts_125_MAGs_75AF_3xcov_forTMM_noambig_sw.txt', row.names=1, header=T, sep="\t")
-
-#Two columns. Samples in rows and the library size as the 2nd column. Needs to be in exact same order as abunds. No headers. No nothing. Just two columns of values.
-
-library_sizes = read.table('/Volumes/GoogleDrive/My Drive/University/Wrighton Lab; PhD/ERPE_Timeseries_viral_communities/microbial_work/read_mapping/library_sizes_sw.tsv', row.names=1, col.names=c('sample_name', 'library_size'))
-
-lib.size= c(library_sizes['library_size'])$library_size
-
-counts_norm <- DGEList(counts=counts_dat, lib.size= c(library_sizes['library_size'])$library_size)
-
-counts_norm <- calcNormFactors(counts_norm)
-
-tmms <- cpm(counts_norm)
-write.table(tmms, "125_MAGs_75AF_3xcov_counts_TMM_normalized_noambig_SW.tsv", sep='\t', quote=F)
-
-
-#pore
-
-counts_dat = read.table('/Volumes/GoogleDrive/My Drive/University/Wrighton Lab; PhD/ERPE_Timeseries_viral_communities/microbial_work/read_mapping/95ID_noambig_filtered/coverM_counts_125_MAGs_75AF_3xcov_forTMM_noambig_pw.txt', row.names=1, header=T, sep="\t")
-
-#Two columns. Samples in rows and the library size as the 2nd column. Needs to be in exact same order as abunds. No headers. No nothing. Just two columns of values.
-
-library_sizes = read.table('/Volumes/GoogleDrive/My Drive/University/Wrighton Lab; PhD/ERPE_Timeseries_viral_communities/microbial_work/read_mapping/library_sizes_pw.tsv', row.names=1, col.names=c('sample_name', 'library_size'))
-
-lib.size= c(library_sizes['library_size'])$library_size
-
-counts_norm <- DGEList(counts=counts_dat, lib.size= c(library_sizes['library_size'])$library_size)
-
-counts_norm <- calcNormFactors(counts_norm, method= "TMM")
-
-tmms <- cpm(counts_norm)
-write.table(tmms, "125_MAGs_75AF_3xcov_counts_TMM_normalized_noambig_PW.tsv", sep='\t', quote=F)
-
+write.table(tmms, "125_MAGs_3x_depth_75AF_TMM_normalized.tsv", sep='\t', quote=F)
+write.table(tmms_vir, "1230_vMAGs_3x_depth_75AF_TMM_normalized.tsv", sep='\t', quote=F)
