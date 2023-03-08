@@ -19,4 +19,5 @@ Josué Rodríguez-Ramos1, Angela Oliverio1,2, Mikayla A. Borton1,3, Birgit M. Mu
 \*Corresponding author: Kelly Wrighton
 
 <img width="468" alt="image" src="https://user-images.githubusercontent.com/95941755/223815670-e531cf43-a566-4179-bdca-f8b44dd0ce4f.png">
+Figure 1: Experimental design enables a genome- and time-resolved view of microbial communities at a finely scaled resolution. a) Satellite image of the Erpe river sampling site that is located near Berlin, Germany. b) Conceptual schematic of the surface and porewater sections that were collected as part of this research. c) Data types that were collected as part of this sampling effort. d) Schematic across time of two main ecological variables (water stage, and temperature) across the timepoints collected. The colors and icons highlight the stage of the day when samples were collected.
 
