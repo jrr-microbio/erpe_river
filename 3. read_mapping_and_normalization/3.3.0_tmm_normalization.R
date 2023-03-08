@@ -10,7 +10,7 @@ counts_dat=data.matrix(counts_dat)
 counts_dat_vir=data.matrix(counts_dat_vir)
 
 #For file library sizes, it needs two columns. Samples in rows and the library size as the 2nd column. Needs to be in exact same order as abunds. No headers. No nothing. Just two columns of values.
-library_sizes = read.table('/Volumes/Macintosh HD/Users/josue.rodriguez/Library/CloudStorage/GoogleDrive-jarora2213@gmail.com/My Drive/University/wrighton_lab_phd/erpe_timeseries_viral_communities/_paper_figures/NMDS_and_PCA/NMDS_plots/MAG_NMDS/MAG_coverM_output/library_sizes.tsv', row.names=1, col.names=c('sample_name', 'library_size'))
+library_sizes = read.table('3.3.3_library_sizes.tsv', row.names=1, col.names=c('sample_name', 'library_size'))
 
 lib.size= c(library_sizes['library_size'])$library_size
 
