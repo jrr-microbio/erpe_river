@@ -10,10 +10,8 @@ library(vegan)
 library(ggdark)
 library(ggnewscale)
 
-setwd("/Volumes/Macintosh HD/Users/josue.rodriguez/Library/CloudStorage/GoogleDrive-jarora2213@gmail.com/My Drive/University/wrighton_lab_phd/erpe_timeseries_viral_communities/_paper_figures/NMDS_and_PCA/")
-
 #Loading in our data
-dat=read.table("/Volumes/Macintosh HD/Users/josue.rodriguez/Library/CloudStorage/GoogleDrive-jarora2213@gmail.com/My Drive/University/wrighton_lab_phd/erpe_timeseries_viral_communities/_paper_figures/NMDS_and_PCA/32_sample_geochemistry_incl_FTICR_subset.txt", header = T, sep="\t")
+dat=read.table("4.1.1_32_sample_geochemistry_incl_FTICR_subset.txt", header = T, sep="\t")
 rownames(dat)<-dat[,1]
 dat=dat[-1]
 
