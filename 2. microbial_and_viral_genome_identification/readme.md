@@ -1,1 +1,1 @@
- *This directory contains code for the identification and generation of qc'ed viral and microbial genomes from the Erpe River dataset*
+ *This directory contains code for the identification and generation of qc'ed viral and microbial genomes from the Erpe River dataset. You will also find instructions on how to annotate these genomes, and how we did virus-host linking*
