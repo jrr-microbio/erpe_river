@@ -17,7 +17,7 @@ library(patchwork)
 genome<-t(read.table('4.3.1_MAGs_3x_depth_75AF_TMM_normalized.tsv', sep="\t", header=T,check.names=TRUE, row.names = 1))
 
 ##read in chemistry (nona)
-chem = read.table('/Volumes/Macintosh HD/Users/josue.rodriguez/Library/CloudStorage/GoogleDrive-jarora2213@gmail.com/My Drive/University/wrighton_lab_phd/erpe_timeseries_viral_communities/_paper_figures/NMDS_and_PCA/32_sample_geochemistry_incl_FTICR_subset.txt', sep = '\t', header = TRUE, check.names = T)
+chem = read.table('4.1.1_32_sample_geochemistry_incl_FTICR_subset.txt', sep = '\t', header = TRUE, check.names = T)
 rownames(chem)=chem[,1]
 chem = chem[,-1]
 
