@@ -13,13 +13,11 @@ library(ggdark)
 library(tidyverse)
 library(patchwork)
 
-setwd("/Volumes/Macintosh HD/Users/josue.rodriguez/Library/CloudStorage/GoogleDrive-jarora2213@gmail.com/My Drive/University/wrighton_lab_phd/erpe_timeseries_viral_communities/_paper_figures/NMDS_and_PCA/NMDS_plots/vMAG_NMDS/")
-
 ##read in feature table with species as columns and samples as rows
-virgenome<-t(read.table('/Volumes/Macintosh HD/Users/josue.rodriguez/Library/CloudStorage/GoogleDrive-jarora2213@gmail.com/My Drive/University/wrighton_lab_phd/erpe_timeseries_viral_communities/_paper_figures/NMDS_and_PCA/NMDS_plots/vMAG_NMDS/32_sample/1230_vMAGs_3x_depth_75AF_TMM_normalized_32_sample.tsv', sep="\t", header=T,check.names=TRUE, row.names = 1))
+virgenome<-t(read.table('4.2.1_1230_vMAGs_3x_depth_75AF_TMM_normalized_32_sample.tsv', sep="\t", header=T,check.names=TRUE, row.names = 1))
 
 ##read in chemistry (nona)
-chem = read.table('/Volumes/Macintosh HD/Users/josue.rodriguez/Library/CloudStorage/GoogleDrive-jarora2213@gmail.com/My Drive/University/wrighton_lab_phd/erpe_timeseries_viral_communities/_paper_figures/NMDS_and_PCA/32_sample_geochemistry_incl_FTICR_subset.txt', sep = '\t', header = TRUE, check.names = T)
+chem = read.table('', sep = '\t', header = TRUE, check.names = T)
 rownames(chem)=chem[,1]
 chem = chem[,-1]
 
