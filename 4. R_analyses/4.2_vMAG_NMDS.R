@@ -17,7 +17,7 @@ library(patchwork)
 virgenome<-t(read.table('4.2.1_1230_vMAGs_3x_depth_75AF_TMM_normalized_32_sample.tsv', sep="\t", header=T,check.names=TRUE, row.names = 1))
 
 ##read in chemistry (nona)
-chem = read.table('', sep = '\t', header = TRUE, check.names = T)
+chem = read.table('4.1.1_32_sample_geochemistry_incl_FTICR_subset.txt', sep = '\t', header = TRUE, check.names = T)
 rownames(chem)=chem[,1]
 chem = chem[,-1]
 
