@@ -17,3 +17,6 @@ Josué Rodríguez-Ramos1, Angela Oliverio1,2, Mikayla A. Borton1,3, Birgit M. Mu
 4 Leibniz Institute of Freshwater Ecology and Inland Fisheries, Berlin, Germany
 
 \*Corresponding author: Kelly Wrighton
+
+<img width="468" alt="image" src="https://user-images.githubusercontent.com/95941755/223815670-e531cf43-a566-4179-bdca-f8b44dd0ce4f.png">
+
