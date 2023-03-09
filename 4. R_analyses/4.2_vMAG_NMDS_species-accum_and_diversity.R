@@ -66,6 +66,10 @@ Ord_dist <-metaMDSdist(virgenome, distance = "bray", noshare = 0.1, trace = 1, a
 mrpp(virgenome, chem$sw_pw, permutations=999, distance="bray")
 anosim(Ord_dist, chem$sw_pw, permutations = 999)
 
+#For PERMANOVA
+library(mctoolsr)
+dm.dat = calc_dm(t(virgenome), method = "bray")
+adonis(formula = dm.dat ~ sw_pw + timepoint, data = chem, permutations = 999)
 #########################
 ##Now to work on plotting the NMDS on ggplot in 2D (k = 3 gives 3D). Next 5 lines just making sure the plot still looks good with added features on metaMDS command.
 NMDS_Bray_virgenome <-metaMDS(virgenome, distance = "bray", k =2,
