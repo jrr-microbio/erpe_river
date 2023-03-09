@@ -67,6 +67,11 @@ Ord_dist <-metaMDSdist(genome, distance = "bray", noshare = 0.1, trace = 1, auto
 mrpp(genome, chem$sw_pw, permutations=999, distance="bray")
 anosim(Ord_dist, chem$sw_pw, permutations = 999)
 
+# PERMANOVA
+library(mctoolsr)
+dm.mags = calc_dm(genome, method = "bray")
+adonis(formula = dm.mags ~ sw_pw + timepoint, data = map, permutations = 999)
+
 #########################
 ##Now to work on plotting the NMDS on ggplot in 2D (k = 3 gives 3D). Next 5 lines just making sure the plot still looks good with added features on metaMDS command.
 NMDS_Bray_genome <-metaMDS(genome, distance = "bray", k =2,
