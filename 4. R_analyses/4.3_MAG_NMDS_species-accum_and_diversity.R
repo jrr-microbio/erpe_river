@@ -69,7 +69,7 @@ anosim(Ord_dist, chem$sw_pw, permutations = 999)
 
 # PERMANOVA
 library(mctoolsr)
-dm.mags = calc_dm(genome, method = "bray")
+dm.mags = calc_dm(t(genome), method = "bray")
 adonis(formula = dm.mags ~ sw_pw + timepoint, data = map, permutations = 999)
 
 #########################
