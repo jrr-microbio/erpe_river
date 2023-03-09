@@ -187,7 +187,7 @@ pheatmap(moduleTraitCor2,
 ########################################
 #Now plotting genome significant and subnetwork membership
 #######################################
-
+#Tutorial can be found here: https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/Tutorials/a
 # Calculate topological overlap
 TOM = TOMsimilarityFromExpr(adjs_active.t_log, power = power_thresh,
                             networkType = "signed hybrid")
