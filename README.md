@@ -1,4 +1,4 @@
-# This is a GitHub Repository of code used for the publication titled: Spatial and finely tuned temporal metagenomics of river compartments reveals viral community dynamics in an urban stream
+# This is a GitHub Repository of code used for the publication titled: Spatial and temporal metagenomics of river compartments reveals viral community dynamics in an urban stream
 
 The different files in this repository have all the necessary steps that are required to re-create the output that we used to write this manuscript. In each file, you will either find specific commands on what exactly was run, and how to get input files for them if they are part of a pipeline, OR, they will contain commands as well as the input files that were used (e.g., 2.1..., 2.2...3.1...) where each whole number corresponds to the main command and the decimals represent the additional files provided.
 
