@@ -26,9 +26,7 @@ echo "Sorting and Mapping Completed"
 
 ###########Dereplicate the final set of MAGs
 
-##!!! NOTE !!! The manuscript says these were dereplicated at 95% - however this was a versioning issue. The dRep version that was run (v2.XX) used default dRep as 99% ANI. The newer versions use 95% ANI. The 95% cutoff was written by mistake due to the documentation issues with dRep. The correct code that will yield the same results is below:
-
-dRep dereplicate dRep_out_MAGs_99_id -sa 0.99 -p 30 -comp 50 -con 10 -g /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_and_pore_viral_db_analyses/all_microbial_genomes_all_samples/*fa
+dRep dereplicate dRep_out_MAGs_95_id -sa 0.95 -p 30 -comp 50 -con 10 -g /home/projects-wrighton-2/GROWdb/WHONDRS_2018/metaG/2018_rivers/erpe/erpe_JRR/surface_and_pore_viral_db_analyses/all_microbial_genomes_all_samples/*fa
 
 ###########Now run quality control software on all dereplicated MAGs
 
